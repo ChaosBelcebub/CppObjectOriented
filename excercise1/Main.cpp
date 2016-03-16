@@ -85,12 +85,23 @@ Punkt** neuesPunktFeld(int dim)
 }
 
 // Delete array
-void clearPunktFeld(Punkt** p, int size)
+void clearPunktFeld(Punkt** p)
 {
-  for (int i = 0; i < size; ++i) {
-    delete p[i];
+  while(*p) {
+    delete *p;
+    p++;
   }
   delete[] p;
+}
+
+// Max distance between points of my array
+double maxAbstand(Punkt** field, Punkt* p1, Punkt* p2)
+{
+  while(*field)
+  {
+    printPunkt(**field);
+    field++;
+  }
 }
 
 int main(int argc, char *argv[])
@@ -137,5 +148,6 @@ int main(int argc, char *argv[])
 
   int size = 2;
   Punkt** a = neuesPunktFeld(size);
-  clearPunktFeld(a, size);
+  maxAbstand(a, neuerPunkt(), neuerPunkt());
+  clearPunktFeld(a);
 }

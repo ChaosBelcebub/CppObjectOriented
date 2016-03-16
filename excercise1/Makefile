@@ -8,15 +8,9 @@ LIBS = -lncurses
 
 .PRECIOUS: %.o
 
-all: compile test checkstyle
+all: compile
 
 compile: $(MAIN) $(TEST)
-
-test: compile
-	for T in $(TEST); do ./$$T; done
-
-checkstyle:
-	$(CHECKSTYLE) *.cpp *.h
 
 %Main: %Main.o $(OBJECTS)
 	$(CXX) -o $@ $^ $(LIBS)
