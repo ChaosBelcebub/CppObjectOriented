@@ -85,22 +85,34 @@ Punkt** neuesPunktFeld(int dim)
 }
 
 // Delete array
-void clearPunktFeld(Punkt** p)
+void clearPunktFeld(Punkt** p, int dim)
 {
-  while(*p) {
-    delete *p;
-    p++;
+  for(int i=0; i < dim; ++i) {
+    delete p[i];
   }
   delete[] p;
 }
 
 // Max distance between points of my array
-double maxAbstand(Punkt** field, Punkt* p1, Punkt* p2)
+double maxAbstand(Punkt** field, Punkt* p1, Punkt* p2, int dim)
 {
-  while(*field)
+  double result = 0.0;
+  double temp;
+  for(int i=0; i < dim; ++i)
   {
-    printPunkt(**field);
-    field++;
+    for(int j=0; j < dim; ++j)
+    {
+      if(i != j)
+      {
+        temp = abstand(*field[i], *field[j]);
+        if(temp > result)
+        {
+          result = temp;
+          p1 = field[i];
+          p2 = field[j];
+        }
+      }
+    }
   }
 }
 
@@ -146,8 +158,13 @@ int main(int argc, char *argv[])
   Punkt* np = neuerPunkt();
   printPunkt(*np);
 
-  int size = 2;
+  int size = 3;
   Punkt** a = neuesPunktFeld(size);
-  maxAbstand(a, neuerPunkt(), neuerPunkt());
-  clearPunktFeld(a);
+  Punkt* punkt1 = new Punkt();
+  Punkt* punkt2 = new Punkt();
+  cout << "maxAbstand: " << maxAbstand(a, punkt1, punkt2, size) << endl;
+  cout << "Am weitesten entfernte Punkte:" << endl;
+  printPunkt(*punkt1);
+  printPunkt(*punkt2);
+  clearPunktFeld(a, size);
 }
