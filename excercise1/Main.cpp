@@ -2,10 +2,12 @@
 // HFU 14.03.2015
 
 #include <iostream>
+#include <algorithm>
 #include <math.h>
 
 using namespace std;
 
+// Struct of a point
 struct Punkt
 {
   long int x;
@@ -13,6 +15,7 @@ struct Punkt
 };
 
 // Rectangular
+// Defined by two points, left down and right up
 struct Rechteck
 {
   Punkt lu;
@@ -40,7 +43,8 @@ bool gleich(const Punkt &p1, const Punkt &p2)
 // Returns the area
 double flaeche(const Rechteck* r)
 {
-  return (r->ro.x - r->lu.x) * (r->ro.y - r->lu.y);
+  double area = (r->ro.x - r->lu.x) * (r->ro.y - r->lu.y);
+  return area >= 0 ? area : area*-1;
 }
 
 // Checks if a point is inside a rectangular
@@ -62,12 +66,14 @@ bool ueberlapp(const Rechteck *r1, const Rechteck *r2)
 // Dynamic creation of a point
 Punkt* neuerPunkt()
 {
+  // Get the values
   long int x, y;
   cout << "X-Wert eingeben: ";
   cin >> x;
   cout << "Y-Wert eingeben: ";
   cin >> y;
   
+  // Create new Point wiht values
   Punkt* punkt = new Punkt();
   punkt->x = x;
   punkt->y = y;
@@ -77,7 +83,9 @@ Punkt* neuerPunkt()
 // Dynamic array
 Punkt** neuesPunktFeld(int dim)
 {
+  // Create an array of given dimension
   Punkt** p = new Punkt*[dim];
+  // Fill array with new points
   for (int i = 0; i < dim; ++i) {
     p[i] = neuerPunkt();
   }
@@ -87,9 +95,11 @@ Punkt** neuesPunktFeld(int dim)
 // Delete array
 void clearPunktFeld(Punkt** p, int dim)
 {
+  // Delete all points of the array
   for(int i=0; i < dim; ++i) {
     delete p[i];
   }
+  // Delete array
   delete[] p;
 }
 
@@ -98,73 +108,160 @@ double maxAbstand(Punkt** field, Punkt* p1, Punkt* p2, int dim)
 {
   double result = 0.0;
   double temp;
+  // Iterate over all possible different pairs of points
   for(int i=0; i < dim; ++i)
   {
     for(int j=0; j < dim; ++j)
     {
       if(i != j)
       {
+        // Calculate distance
         temp = abstand(*field[i], *field[j]);
         if(temp > result)
         {
           result = temp;
-          p1 = field[i];
-          p2 = field[j];
+          *p1 = *field[i];
+          *p2 = *field[j];
         }
       }
     }
   }
+  return result;
 }
 
+double minWeg(Punkt** field, Punkt** weg, int dim)
+{
+  double result = -1;
+  // Sort field
+  sort(field, field+dim);
+  // Calculate path for all permutations
+  do
+  {
+    double tmp = 0;
+    for(int i=1; i<dim; ++i)
+    {
+      tmp += abstand(*field[i], *field[i-1]);
+    }
+    // For the first iteration just store the path.
+    // Else check if path is shorter
+    if(result < 0 || (result >= 0 && tmp < result))
+    {
+      result = tmp;
+      for(int i=0; i<dim; ++i)
+      {
+        *weg[i] = *field[i];
+      }
+    }
+  } while(next_permutation(field, field+dim));
+}
+
+// Tests
 int main(int argc, char *argv[])
 {
-  Punkt p;
-  p.x = 10;
-  p.y = 10;
+  // Test 1
+  // Print a Point
+  cout << endl << "-- Test 1: Print a point --" << endl;
+  cout << "Expected:" << endl;
+  cout << "Punkt: 0, 0" << endl;
+  cout << "Punkt: -2, -5" << endl;
+  cout << "Punkt: 5, 42" << endl << endl;
+  cout << "Result:" << endl;
 
-  Punkt p1;
-  p1.x = 2;
-  p1.y = 2;
+  Punkt p1 = {0, 0};
+  Punkt p2 = {-2, -5};
+  Punkt p3 = {5, 42};
 
-  Rechteck r;
-  r.lu.x = 1;
-  r.lu.y = 1;
-  r.ro.x = 3;
-  r.ro.y = 2;
+  printPunkt(p1);
+  printPunkt(p2);
+  printPunkt(p3);
 
-  Rechteck r2;
-  r2.lu.x = 1;
-  r2.lu.y = 1;
-  r2.ro.x = 2;
-  r2.ro.y = 3;
+  // Test 2
+  // Distance
+  cout << endl << "-- Test 2: Distance --" << endl;
+  cout << "Expected:" << endl;
+  cout << "0" << endl;
+  cout << "0" << endl;
+  cout << "2" << endl;
+  cout << "4" << endl;
+  cout << "7.07107" << endl << endl;
+  cout << "Result:" << endl;
 
-  Rechteck r3;
-  r3.lu.x = 0;
-  r3.lu.y = 3;
-  r3.ro.x = 1;
-  r3.ro.y = 4;
+  Punkt p4 = {2, 0};
+  Punkt p5 = {0, -4};
+  Punkt p6 = {5, 5};
 
-  // Tests
-  printPunkt(p);
-  cout << "Abstand: " << abstand(p, p1) << endl;
-  if (gleich(p, p)) cout << "Punkte p und p sind gleich." << endl;
-  if (!gleich(p, p1)) cout << "Punkte p und p1 nicht gleich." << endl;
-  cout << "Fläche: " << flaeche(&r) << endl;
-  cout << "Fläche: " << flaeche(&r2) << endl;
-  if (!innerhalb(r, p)) cout << "p nicht in r." << endl;
-  if (innerhalb(r, p1)) cout << "p in r." << endl;
-  if (ueberlapp(&r, &r2)) cout << "r überlappt mit r2" << endl;
-  if (!ueberlapp(&r, &r3)) cout << "r überlappt r2 nicht" << endl;
-  Punkt* np = neuerPunkt();
-  printPunkt(*np);
+  cout << abstand(p1, p1) << endl;
+  cout << abstand(p3, p3) << endl;
+  cout << abstand(p1, p4) << endl;
+  cout << abstand(p5, p1) << endl;
+  cout << abstand(p6, p1) << endl;
 
-  int size = 3;
-  Punkt** a = neuesPunktFeld(size);
-  Punkt* punkt1 = new Punkt();
-  Punkt* punkt2 = new Punkt();
-  cout << "maxAbstand: " << maxAbstand(a, punkt1, punkt2, size) << endl;
-  cout << "Am weitesten entfernte Punkte:" << endl;
-  printPunkt(*punkt1);
-  printPunkt(*punkt2);
-  clearPunktFeld(a, size);
+  // Test 3
+  // Same points?
+  cout << endl << "-- Test 3: Are points the same? --" << endl;
+  cout << "Expected:" << endl;
+  cout << "True" << endl;
+  cout << "True" << endl;
+  cout << "False" << endl;
+  cout << "False" << endl;
+  cout << "False" << endl << endl;
+  cout << "Result:" << endl;
+  Punkt p7 = {5, 42};
+
+  cout << (gleich(p1, p1) ? "True" : "False") << endl;
+  cout << (gleich(p3, p7) ? "True" : "False") << endl;
+  cout << (gleich(p1, p2) ? "True" : "False") << endl;
+  cout << (gleich(p5, p6) ? "True" : "False") << endl;
+  cout << (gleich(p2, p7) ? "True" : "False") << endl;
+
+  // Test 4
+  // Area
+  cout << endl << "-- Test 4: Area --" << endl;
+  cout << "Expected:" << endl;
+  cout << "0" << endl;
+  cout << "10" << endl;
+  cout << "25" << endl;
+  cout << "25" << endl << endl;
+  cout << "Result:" << endl;
+
+  Rechteck r1 = {p1, p1};
+  Rechteck r2 = {p2, p1};
+  Rechteck r3 = {p1, p6};
+  Rechteck r4 = {p6, p1};
+
+  cout << flaeche(&r1) << endl;
+  cout << flaeche(&r2) << endl;
+  cout << flaeche(&r3) << endl;
+  cout << flaeche(&r4) << endl;
+
+  // Test 5
+  // Check if point is inside rectangular
+  cout << endl << "-- Test5: Point inside rectangular? --" << endl;
+  cout << "Expected:" << endl;
+  cout << "True" << endl;
+  cout << "True" << endl;
+  cout << "False" << endl;
+  cout << "False" << endl;
+  cout << "False" << endl;
+  cout << "False" << endl << endl;
+  cout << "Result:" << endl;
+
+  cout << (innerhalb(r1, p1) ? "True" : "False") << endl;
+  cout << (innerhalb(r3, p4) ? "True" : "False") << endl;
+  cout << (innerhalb(r1, p2) ? "True" : "False") << endl;
+  cout << (innerhalb(r3, p2) ? "True" : "False") << endl;
+  cout << (innerhalb(r3, p3) ? "True" : "False") << endl;
+  cout << (innerhalb(r3, p5) ? "True" : "False") << endl;
+
+
+  Punkt** p = neuesPunktFeld(3);
+  cout << "result feld:" << endl;
+  Punkt** weg = neuesPunktFeld(3);
+  cout << minWeg(p, weg, 3) << endl;
+  for(int i=0; i<3; ++i)
+  {
+    printPunkt(*weg[i]);
+  }
+  clearPunktFeld(p, 3);
+  clearPunktFeld(weg, 3);
 }
