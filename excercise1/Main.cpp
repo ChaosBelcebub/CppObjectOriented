@@ -1,5 +1,5 @@
 // Michael Kotzjan
-// HFU 14.03.2015
+// HFU 21.03.2015
 
 #include <iostream>
 #include <algorithm>
@@ -56,9 +56,9 @@ double innerhalb(const Rechteck &r, const Punkt &p)
 // Checks if a rectangular lap over an other
 bool ueberlapp(const Rechteck *r1, const Rechteck *r2)
 {
-  if (r1->ro.x < r2->lu.x || r2->lu.x > r1->ro.x)
+  if(r1->lu.x > r2->ro.x || r1->ro.x < r2->lu.x)
     return false;
-  if (r1->ro.y < r2->lu.y || r2->lu.y > r1->ro.y)
+  if(r1->lu.y > r2->ro.y || r1->ro.y < r2->lu.y)
     return false;
   return true;
 }
@@ -73,7 +73,7 @@ Punkt* neuerPunkt()
   cout << "Y-Wert eingeben: ";
   cin >> y;
   
-  // Create new Point wiht values
+  // Create new Point with values
   Punkt* punkt = new Punkt();
   punkt->x = x;
   punkt->y = y;
@@ -236,7 +236,7 @@ int main(int argc, char *argv[])
 
   // Test 5
   // Check if point is inside rectangular
-  cout << endl << "-- Test5: Point inside rectangular? --" << endl;
+  cout << endl << "-- Test 5: Point inside rectangular? --" << endl;
   cout << "Expected:" << endl;
   cout << "True" << endl;
   cout << "True" << endl;
@@ -253,15 +253,109 @@ int main(int argc, char *argv[])
   cout << (innerhalb(r3, p3) ? "True" : "False") << endl;
   cout << (innerhalb(r3, p5) ? "True" : "False") << endl;
 
+  // Test 6
+  // Check if two rectangular lap over another
+  cout << endl << "-- Test 6: Rectangular lap over? --" << endl;
+  cout << "Expected:" << endl;
+  cout << "True" << endl;
+  cout << "True" << endl;
+  cout << "True" << endl;
+  cout << "False" << endl;
+  cout << "False" << endl << endl;
+  cout << "Result:" << endl;
+  
+  Rechteck r5 = {p6, p3};
+  Rechteck r6 = {p2, p6};
+  cout << (ueberlapp(&r1, &r1) ? "True" : "False") << endl;
+  cout << (ueberlapp(&r6, &r2) ? "True" : "False") << endl;
+  cout << (ueberlapp(&r2, &r6) ? "True" : "False") << endl;
+  cout << (ueberlapp(&r5, &r1) ? "True" : "False") << endl;
+  cout << (ueberlapp(&r1, &r5) ? "True" : "False") << endl;
 
-  Punkt** p = neuesPunktFeld(3);
-  cout << "result feld:" << endl;
-  Punkt** weg = neuesPunktFeld(3);
-  cout << minWeg(p, weg, 3) << endl;
+  // Test 7
+  // Dynamic creation of a new point
+  cout << endl << "-- Test 7: Dynamic creation of a point --" << endl;
+  cout << "Expected:" << endl;
+  cout << "Enter values for 3 points." << endl;
+  cout << "The printed output should be correct." << endl;
+
+  Punkt* p8 = neuerPunkt();
+  Punkt* p9 = neuerPunkt();
+  Punkt* p10 = neuerPunkt();
+
+  cout << endl << "Result:" << endl;
+
+  printPunkt(*p8);
+  printPunkt(*p9);
+  printPunkt(*p10);
+
+  delete p8;
+  delete p9;
+  delete p10;
+
+  // Test 8
+  // Dynamic creation of a point field
+  cout << endl << "-- Test 8: Dynamic creation point field --" << endl;
+  cout << "Expected:" << endl;
+  cout << "Enter values for 3 points." << endl;
+  cout << "The printed output should be correct." << endl;
+
+  Punkt** pf1 = neuesPunktFeld(3);
+
+  cout << endl << "Result:" << endl;
+
+  for(int i = 0; i < 3; ++i)
+  {
+    printPunkt(*pf1[i]);
+  }
+
+  clearPunktFeld(pf1, 3);
+
+  // Test 9
+  // Max distance of points of an array
+  cout << endl << "-- Test 9: Max distance of point array --" << endl;
+  cout << "Expected:" << endl;
+  cout << "Enter values for 3 points." << endl;
+  cout << "The output should be the max distance and the two points." << endl;
+
+  Punkt** pf3 = neuesPunktFeld(3);
+  Punkt* p11 = new Punkt();
+  Punkt* p12 = new Punkt();
+
+  cout << endl << "Result:" << endl;
+
+  cout << "Distance: " << maxAbstand(pf3, p11, p12, 3) << endl;
+  printPunkt(*p11);
+  printPunkt(*p12);
+
+  clearPunktFeld(pf3, 3);
+  delete p11;
+  delete p12;
+
+  // Test 10
+  // Shortest path with all points used
+  cout << endl << "-- Test 10: Shortest path --" << endl;
+  cout << "Expected:" << endl;
+  cout << "Enter values for 3 points." << endl;
+  cout << "The output should be the shortest path and distance." << endl;
+
+  Punkt** pf4 = neuesPunktFeld(3);
+  Punkt** result = new Punkt*[3];
   for(int i=0; i<3; ++i)
   {
-    printPunkt(*weg[i]);
+    result[i] = new Punkt();
   }
-  clearPunktFeld(p, 3);
-  clearPunktFeld(weg, 3);
+
+  cout << endl << "Result:" << endl;
+
+  cout << "Distance: " << minWeg(pf4, result, 3) << endl;
+  for(int i=0; i<3; ++i)
+  {
+    printPunkt(*result[i]);
+  }
+
+  clearPunktFeld(pf4, 3);
+  clearPunktFeld(result, 3);
+
+  return 0;
 }
