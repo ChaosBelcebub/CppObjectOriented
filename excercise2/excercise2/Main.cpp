@@ -30,6 +30,15 @@ class Queue
     queue = q;
   }
 
+  ~Queue()
+  {
+    for (int i = 0; i < dim; ++i)
+    {
+      delete queue[i];
+    }
+    delete[] queue;
+  }
+
   // Insert value
   void insert(int i)
   {
@@ -136,4 +145,11 @@ int main(int argc, char *argv[])
     q2.remove();
     q2.insert(i+1);
   }
+
+  // Delete q
+  for (int i = 0; i < dim; ++i)
+  {
+    delete q[i];
+  }
+  delete[] q;
 }
