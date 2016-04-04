@@ -145,11 +145,5 @@ int main(int argc, char *argv[])
     q2.remove();
     q2.insert(i+1);
   }
-
-  // Delete q
-  for (int i = 0; i < dim; ++i)
-  {
-    delete q[i];
-  }
-  delete[] q;
 }
+
