@@ -1,0 +1,16 @@
+Das erste, das bei dem Lesen des Quellcodes aus Aufgabe 1 auffällt
+ist die Methode neg(dyna ob). Dort wird "-ob.get()" zurückgegeben,
+was meiner Meinung nach nicht Funktioniert. Einen Wert zu negieren
+bedarf einer änderung des Objektes, wir müssen also "-1*ob.get()"
+zurückgeben.
+
+Dank dem Hinweis unterhalb der Aufgabe springt einem das zweite
+Problem ebenfalls ins Auge:
+Die Methode neg(dyna ob) bekommt ein Objekt per Wert als Argument
+übergeben. Dabei wird der Kopierkonstruktor aufgerufen, der den
+Pointer "int *p" kopiert. Beim schließen der "neg" Methode wird der
+Destruktor für dieses lokale Objekt ob aufgerufen, und auch der
+gemeinsam genutzte Verweiß auf p gelöscht. Alle weiteren Zugriffe
+aus der Main schlagen fehl.
+Lösung wäre also die Übergabe per Referenz oder das schreiben eines
+Kopierkonstruktor, um eine tiefe Kopie von p zu erstellen.
