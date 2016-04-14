@@ -5,11 +5,26 @@
 
 using namespace std;
 
+class TestObjektElement
+{
+  public:
+  TestObjektElement()
+  {
+    cout << "TestObjektElement erzeugt." << endl;
+  }
+
+  ~TestObjektElement()
+  {
+    cout << "TestObjektElement zerstört." << endl;
+  }
+};
+
 class TestObjekt
 {
   static int anz;
   int count;
-  
+  TestObjektElement t;
+
   public:
   TestObjekt()
   {
@@ -56,6 +71,11 @@ TestObjekt testFunk()
   return t;
 }
 
+void testFunk2()
+{
+  static TestObjekt t;
+}
+
 int main(int argc, char *argv[])
 {
   // Local
@@ -73,7 +93,20 @@ int main(int argc, char *argv[])
   cout << endl;
 
   cout << "e)" << endl;
-  TestObjekt t3 = testFunk();
+  TestObjekt t3;
+  t3 = testFunk();
   testFunk();
+  cout << endl;
+
+  cout << "f)" << endl;
+  testFunk2();
+  testFunk2();
+  cout << endl;
+
+  cout << "g)" << endl;
+  cout << "Vorher TestObjektElement einkommentieren!" << endl;
+  {
+    TestObjekt t;
+  }
   cout << endl;
 }
