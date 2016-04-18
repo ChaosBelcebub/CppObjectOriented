@@ -4,6 +4,8 @@ was meiner Meinung nach nicht Funktioniert. Einen Wert zu negieren
 bedarf einer änderung des Objektes, wir müssen also "-1*ob.get()"
 zurückgeben.
 
+Das war leider eine Falsche Annahme ;)
+
 Dank dem Hinweis unterhalb der Aufgabe springt einem das zweite
 Problem ebenfalls ins Auge:
 Die Methode neg(dyna ob) bekommt ein Objekt per Wert als Argument

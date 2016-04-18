@@ -15,6 +15,10 @@ class Feldklasse
   {
     dim = i;
     feld = new double[dim];
+    for (int i = 0; i < dim; ++i)
+    {
+      feld[i] = 0.0;
+    }
   }
 
   // Kopierkonstruktor
@@ -57,19 +61,31 @@ class Feldklasse
 
 int main()
 {
+  // Erzeugen eines Objektes
   Feldklasse fk(5);
+  
+  cout << "Test 1" << endl;
+  // Befüllen mit Indexprüfung
   for(int i = 0; i < 6; ++i)
   {
     fk.setElement(i, i);
   }
+
+  cout << "Test 2" << endl;
+  // Ausgeben mit Indexprüfung
   for(int i = 4; i >= -1; --i)
   {
     cout << fk.getElement(i) << endl;
   }
 
+  cout << "Test 3" << endl;
+  // Aufruf Kopierkonstruktor
   Feldklasse fk2 = fk;
+
+  // Verändern von fk und Ausgabe von fk2
   for(int i = 0; i < 5; ++i)
   {
+    fk.setElement(0.0, i);
     cout << fk2.getElement(i) << endl;
   }
 }

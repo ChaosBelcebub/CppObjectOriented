@@ -25,7 +25,7 @@ dyna::dyna(int i)
 // zurueck
 int neg(dyna &ob)
 {
-  return -1*ob.get();
+  return -ob.get();
 }
 
 int main()
