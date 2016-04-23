@@ -32,6 +32,25 @@ class Feldklasse
     }
   }
 
+  // ###############
+  // New:
+  // Operator =
+  // ###############
+  const Feldklasse& operator=(const Feldklasse& fk)
+  {
+    if (dim != fk.dim)
+    {
+      delete feld;
+      dim = fk.dim;
+      feld = new double[dim];
+    }
+    for (int i = 0; i < dim; ++i)
+    {
+      feld[i] = fk.feld[i];
+    }
+    return fk;
+  }
+
   ~Feldklasse()
   {
     delete feld;
@@ -61,31 +80,49 @@ class Feldklasse
 
 int main()
 {
-  // Erzeugen eines Objektes
+  // Test
+  cout << "Teste Implementierung von Zuweisungsoperator:" << endl;
   Feldklasse fk(5);
-  
-  cout << "Test 1" << endl;
-  // Befüllen mit Indexprüfung
-  for(int i = 0; i < 6; ++i)
+  for (int i = 0; i < 5; ++i)
   {
-    fk.setElement(i, i);
+    fk.setElement(i * 1.5, i);
   }
-
-  cout << "Test 2" << endl;
-  // Ausgeben mit Indexprüfung
-  for(int i = 4; i >= -1; --i)
+  cout << "Ausgabe des Testfeldes:" << endl;
+  for (int i = 0; i < 5; ++i)
   {
-    cout << fk.getElement(i) << endl;
+    cout << i << ": " << fk.getElement(i) << endl;
   }
-
-  cout << "Test 3" << endl;
-  // Aufruf Kopierkonstruktor
-  Feldklasse fk2 = fk;
-
-  // Verändern von fk und Ausgabe von fk2
-  for(int i = 0; i < 5; ++i)
+  cout << "Zuweisung an 3 Felder, größer, kleiner und gleich." << endl;
+  Feldklasse fk1(5);
+  Feldklasse fk2(2);
+  Feldklasse fk3(8);
+  fk1 = fk;
+  fk2 = fk;
+  fk3 = fk;
+  cout << "Veränderung des Testfeldes." << endl;
+  for (int i = 0; i < 5; ++i)
   {
     fk.setElement(0.0, i);
-    cout << fk2.getElement(i) << endl;
+  }
+  cout << "Ausgabe der Felder:" << endl;
+  cout << "Testfeld:" << endl;
+  for (int i = 0; i < 5; ++i)
+  {
+    cout << i << ": " << fk.getElement(i) << endl;
+  }
+  cout << "Feld gleicher Größe:" << endl;
+  for (int i = 0; i < 5; ++i)
+  {
+    cout << i << ": " << fk1.getElement(i) << endl;
+  }
+  cout << "Kleineres Feld:" << endl;
+  for (int i = 0; i < 5; ++i)
+  {
+    cout << i << ": " << fk2.getElement(i) << endl;
+  }
+  cout << "Größeres Feld:" << endl;
+  for (int i = 0; i < 5; ++i)
+  {
+    cout << i << ": " << fk3.getElement(i) << endl;
   }
 }
