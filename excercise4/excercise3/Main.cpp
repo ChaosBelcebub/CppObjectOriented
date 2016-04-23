@@ -129,6 +129,30 @@ class Queue
       }
     }
   }
+
+  // Operator =
+  const Queue& operator=(const Queue& q)
+  {
+    if (dim != q.dim)
+    {
+      for (int i = 0; i < dim; ++i)
+      {
+        delete queue[i];
+      }
+      delete[] queue;
+      dim = q.dim;
+      queue = new string*[dim];
+      for (int i = 0; i < dim; ++i)
+      {
+        queue[i] = new string();
+      }
+    }
+    for (int i = 0; i < dim; ++i)
+    {
+      *queue[i] = *q.queue[i];
+    }
+    return q;
+  }
 };
 
 int main()
@@ -196,5 +220,34 @@ int main()
   q1.del();
   q2.print();
   q2.printAmount();
+
+  cout << endl << "#############" << endl;
+  cout << endl << "Test 11" << endl;
+  cout << "Assign q2 to a new Queue q3 with dim 5 and delete q2:" << endl;
+  Queue q3(5);
+  q3 = q2;
+  q2.del();
+  cout << "q2:" << endl;
+  q2.print();
+  cout << "q3:" << endl;
+  q3.print();
+
+  cout << endl << "Test 12" << endl;
+  cout << "Create new Queue q4 with dim 5, fill and print." << endl;
+  cout << "Assign q4 to new Queue q5 with dim 2, delete q4 and print q5:" << endl;
+  Queue q4(5);
+  Queue q5(2);
+  for (int i = 0; i < 5; ++i)
+  {
+    q4.insert("QueueTest");
+  }
+  cout << "q4 before:" << endl;
+  q4.print();
+  q5 = q4;
+  q4.del();
+  cout << "q4 after:" << endl;
+  q4.print();
+  cout << "q5 after:" << endl;
+  q5.print();
 }
 
