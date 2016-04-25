@@ -63,7 +63,7 @@ class Quader : public Rechteck
 
   double qFlaeche()
   {
-    return (4 * (getBreite() * hoehe)) + (2 * rFlaeche());
+    return (2 * (getBreite() * hoehe)) + (2*(getLaenge() * hoehe)) + (2 * rFlaeche());
   }
 
   double volumen()
