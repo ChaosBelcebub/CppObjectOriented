@@ -11,23 +11,27 @@ class Beobachter
     virtual void aktualisieren() = 0;
 };
 
+class KonkreterBeobachter : public Beobachter
+{
+  public:
+    void aktualisieren()
+    {
+      
+    }
+};
+
 class Subjekt
 {
   public:
-    virtual void registrieren(Beobachter b) = 0;
-    virtual void entfernen(Beobachter b) = 0;
-    virtual void benachrichtigen(Beobachter b) = 0;
+    virtual void registrieren(KonkreterBeobachter b) = 0;
+    virtual void entfernen(KonkreterBeobachter b) = 0;
+    virtual void benachrichtigen(KonkreterBeobachter b) = 0;
     virtual int zustandGeben() = 0;
 };
 
 class KonkretesSubjekt
 {
   
-};
-
-class KonkreterBeobachter
-{
-
 };
 
 int main()
