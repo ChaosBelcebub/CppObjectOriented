@@ -3,6 +3,7 @@
 //
 // Used sources:
 // http://www.codeproject.com/Articles/328365/Understanding-and-Implementing-Observer-Pattern
+// https://de.wikipedia.org/wiki/Beobachter_%28Entwurfsmuster%29
 
 #include <algorithm>
 #include <iostream>

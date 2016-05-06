@@ -33,6 +33,7 @@ class Rechteck
     laenge = l;
   }
 
+  // Calculate
   double umfang()
   {
     return 2*(laenge+breite);
@@ -61,6 +62,7 @@ class Quader : public Rechteck
     hoehe = h;
   }
 
+  // Calculate
   double qFlaeche()
   {
     return (2 * (getBreite() * hoehe)) + (2*(getLaenge() * hoehe)) + (2 * rFlaeche());
@@ -139,5 +141,3 @@ int main()
   cout << "Fläche: " << q1.qFlaeche() << " cm²" << endl;
   cout << "Volumen: " << q1.volumen() << " cm³" << endl;
 }
-
-
