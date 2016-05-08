@@ -78,31 +78,51 @@ template<typename T> class Vielleicht
 
 int main()
 {
-  Vielleicht<int> v1;
-  Vielleicht<double> v2(4.2);
+  cout << endl << "### Integer ###" << endl;
+  {
+    Vielleicht<int> v1;
+    Vielleicht<int> v2(42);
+    Vielleicht<int> v3(-5);
 
-  try
-  {
-    cout << v1.derWert() << endl;
-  } catch (EmptyObjException e)
-  {
-    cout << e.msg << endl;
+    cout << endl << "Wert von v1:" << endl;
+    try
+    {
+      cout << v1.derWert() << endl;
+    } catch (EmptyObjException e)
+    {
+      cout << e.msg << endl;
+    }
+
+    cout << "Wert von v2:" << endl;
+    try
+    {
+      cout << v2.derWert() << endl;
+    } catch (EmptyObjException e)
+    {
+      cout << e.msg << endl;
+    }
+
+    cout << "Wert von v3:" << endl;
+    try
+    {
+      cout << v3.derWert() << endl;
+    } catch (EmptyObjException e)
+    {
+      cout << e.msg << endl;
+    }
+
+    cout << endl << "Ist v1 leer: " << v1.leer() << endl;
+    cout << "Ist v2 leer: " << v2.leer() << endl;
+    cout << "Ist v3 leer: " << v3.leer() << endl;
+
+    cout << endl << "v1 als String: " + v1.text() << endl;
+    cout << "v2 als String: " + v2.text() << endl;
+    cout << "v3 als String: " + v3.text() << endl;
+
+    cout << endl << "v1 + v2: " + (v1 + v2).text() << endl;
+    cout << "v2 + v3: " + (v2 + v3).text() << endl;
+
+    cout << endl << "v1 / v2: " + (v1 / v2).text() << endl;
+    cout << "v2 / v3: " + (v2 / v3).text() << endl;
   }
-
-  try
-  {
-    cout << v2.derWert() << endl;
-  } catch (EmptyObjException e)
-  {
-    cout << e.msg << endl;
-  }
-
-  cout << v1.text() << endl;
-  cout << v2.text() << endl;
-
-  Vielleicht<string> v3("Hallo Welt");
-  cout << v3.text() << endl;
-
-  cout << (v2 / v2).text() << endl;
-  cout << (v1 / v1).text() << endl;
 }
