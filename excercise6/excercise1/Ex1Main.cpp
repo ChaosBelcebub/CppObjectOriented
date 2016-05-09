@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include "./Ex1Bruch.cpp"
 #include "./Ex1EmptyObjException.cpp"
 
 using namespace std;
@@ -50,47 +51,49 @@ template<typename T> class Vielleicht
   }
 
   // + operator
-  friend Vielleicht<T> operator+<T>(const Vielleicht<T> v1, const Vielleicht<T> v2);
+  Vielleicht<T> operator+(const Vielleicht<T>& v);
 
   // / operator
-  //friend Vielleicht<T> operator/(const Vielleicht<T> v1, const Vielleicht<T> v2)
-  //{
-  //  if (v1.leer() || v2.leer())
-  //  {
-  //    Vielleicht<T> tmp;
-  //    return tmp;
-  //  } else {
-  //    Vielleicht<T> tmp(v1.derWert() / v2.derWert());
-  //    return tmp;
-  //  }
-  //}
+  Vielleicht<T> operator/(const Vielleicht<T>& v);
 };
 
-template<typename T> Vielleicht<T> operator+(const Vielleicht<T> v1, const Vielleicht<T> v2)
+template<typename T> Vielleicht<T> Vielleicht<T>::operator+(const Vielleicht<T>& v)
 {
-  if (v1.leer() || v2.leer())
+  if (leer() || v.leer())
   {
     Vielleicht<T> tmp;
     return tmp;
   } else {
-    Vielleicht<T> tmp(v1.derWert() + v2.derWert());
+    Vielleicht<T> tmp(derWert() + v.derWert());
     return tmp;
   }
 }
 
-//string& operator/(const string& lhs, const string& rhs)
-//{
-//  stringstream ss;
-//  for (unsigned int i = 0; i < lhs.length(); ++i)
-//  {
-//    if (rhs.find(lhs[i]) != string::npos)
-//    {
-//      ss << lhs[i];
-//    }
-//  }
-//  string *s = new string(ss.str());
-//  return *s;
-//}
+template<typename T> Vielleicht<T> Vielleicht<T>::operator/(const Vielleicht<T>& v)
+{
+  if (leer() || v.leer())
+  {
+    Vielleicht<T> tmp;
+    return tmp;
+  } else {
+    Vielleicht<T> tmp(derWert() / v.derWert());
+    return tmp;
+  }
+}
+
+template<> Vielleicht<string> Vielleicht<string>::operator/(const Vielleicht<string>& v)
+{
+  if (leer() || v.leer()) return Vielleicht<string>();
+  stringstream ss;
+  for (unsigned int i = 0; i < m_wert.length(); ++i)
+  {
+    if (v.derWert().find(m_wert[i]) != string::npos)
+    {
+      ss << m_wert[i];
+    }
+  }
+  return Vielleicht<string>(ss.str());
+}
 
 int main()
 {
@@ -138,8 +141,8 @@ int main()
     cout << endl << "v1 + v2: " + (v1 + v2).text() << endl;
     cout << "v2 + v3: " + (v2 + v3).text() << endl;
 
-//    cout << endl << "v1 / v2: " + (v1 / v2).text() << endl;
-//    cout << "v2 / v3: " + (v2 / v3).text() << endl;
+    cout << endl << "v1 / v2: " + (v1 / v2).text() << endl;
+    cout << "v2 / v3: " + (v2 / v3).text() << endl;
   }
 
   cout << endl << "### Double ###" << endl;
@@ -186,8 +189,8 @@ int main()
     cout << endl << "v1 + v2: " + (v1 + v2).text() << endl;
     cout << "v2 + v3: " + (v2 + v3).text() << endl;
 
-//    cout << endl << "v1 / v2: " + (v1 / v2).text() << endl;
-//    cout << "v2 / v3: " + (v2 / v3).text() << endl;
+    cout << endl << "v1 / v2: " + (v1 / v2).text() << endl;
+    cout << "v2 / v3: " + (v2 / v3).text() << endl;
   }
 
   cout << endl << "### String ###" << endl;
@@ -234,7 +237,55 @@ int main()
     cout << endl << "v1 + v2: " + (v1 + v2).text() << endl;
     cout << "v2 + v3: " + (v2 + v3).text() << endl;
 
-//    cout << endl << "v1 / v2: " + (v1 / v2).text() << endl;
-//    cout << "v2 / v3: " + (v2 / v3).text() << endl;
+    cout << endl << "v1 / v2: " + (v1 / v2).text() << endl;
+    cout << "v2 / v3: " + (v2 / v3).text() << endl;
+  }
+
+  cout << endl << "### Bruch ###" << endl;
+  {
+    Vielleicht<Bruch> v1;
+    Vielleicht<Bruch> v2(2);
+    Vielleicht<Bruch> v3(4);
+
+    cout << endl << "Wert von v1:" << endl;
+    try
+    {
+      cout << v1.derWert() << endl;
+    } catch (EmptyObjException e)
+    {
+      cout << e.msg << endl;
+    }
+
+    cout << "Wert von v2:" << endl;
+    try
+    {
+      cout << v2.derWert() << endl;
+    } catch (EmptyObjException e)
+    {
+      cout << e.msg << endl;
+    }
+
+    cout << "Wert von v3:" << endl;
+    try
+    {
+      cout << v3.derWert() << endl;
+    } catch (EmptyObjException e)
+    {
+      cout << e.msg << endl;
+    }
+
+    cout << endl << "Ist v1 leer: " << v1.leer() << endl;
+    cout << "Ist v2 leer: " << v2.leer() << endl;
+    cout << "Ist v3 leer: " << v3.leer() << endl;
+
+    cout << endl << "v1 als String: " + v1.text() << endl;
+    cout << "v2 als String: " + v2.text() << endl;
+    cout << "v3 als String: " + v3.text() << endl;
+
+    cout << endl << "v1 + v2: " + (v1 + v2).text() << endl;
+    cout << "v2 + v3: " + (v2 + v3).text() << endl;
+
+    cout << endl << "v1 / v2: " + (v1 / v2).text() << endl;
+    cout << "v2 / v3: " + (v2 / v3).text() << endl;
   }
 }
