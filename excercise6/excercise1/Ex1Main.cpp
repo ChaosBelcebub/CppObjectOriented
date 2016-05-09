@@ -50,45 +50,47 @@ template<typename T> class Vielleicht
   }
 
   // + operator
-  friend Vielleicht<T> operator+(const Vielleicht<T> v1, const Vielleicht<T> v2)
-  {
-    if (v1.leer() || v2.leer())
-    {
-      Vielleicht<T> tmp;
-      return tmp;
-    } else {
-      Vielleicht<T> tmp(v1.derWert() + v2.derWert());
-      return tmp;
-    }
-  }
+  friend Vielleicht<T> operator+<T>(const Vielleicht<T> v1, const Vielleicht<T> v2);
 
   // / operator
-  friend Vielleicht<T> operator/(const Vielleicht<T> v1, const Vielleicht<T> v2)
-  {
-    if (v1.leer() || v2.leer())
-    {
-      Vielleicht<T> tmp;
-      return tmp;
-    } else {
-      Vielleicht<T> tmp(v1.derWert() / v2.derWert());
-      return tmp;
-    }
-  }
+  //friend Vielleicht<T> operator/(const Vielleicht<T> v1, const Vielleicht<T> v2)
+  //{
+  //  if (v1.leer() || v2.leer())
+  //  {
+  //    Vielleicht<T> tmp;
+  //    return tmp;
+  //  } else {
+  //    Vielleicht<T> tmp(v1.derWert() / v2.derWert());
+  //    return tmp;
+  //  }
+  //}
 };
 
- string& operator/(const string& lhs, const string& rhs)
+template<typename T> Vielleicht<T> operator+(const Vielleicht<T> v1, const Vielleicht<T> v2)
 {
-  stringstream ss;
-  for (unsigned int i = 0; i < lhs.length(); ++i)
+  if (v1.leer() || v2.leer())
   {
-    if (rhs.find(lhs[i]) != string::npos)
-    {
-      ss << lhs[i];
-    }
+    Vielleicht<T> tmp;
+    return tmp;
+  } else {
+    Vielleicht<T> tmp(v1.derWert() + v2.derWert());
+    return tmp;
   }
-  string *s = new string(ss.str());
-  return *s;
 }
+
+//string& operator/(const string& lhs, const string& rhs)
+//{
+//  stringstream ss;
+//  for (unsigned int i = 0; i < lhs.length(); ++i)
+//  {
+//    if (rhs.find(lhs[i]) != string::npos)
+//    {
+//      ss << lhs[i];
+//    }
+//  }
+//  string *s = new string(ss.str());
+//  return *s;
+//}
 
 int main()
 {
@@ -136,8 +138,8 @@ int main()
     cout << endl << "v1 + v2: " + (v1 + v2).text() << endl;
     cout << "v2 + v3: " + (v2 + v3).text() << endl;
 
-    cout << endl << "v1 / v2: " + (v1 / v2).text() << endl;
-    cout << "v2 / v3: " + (v2 / v3).text() << endl;
+//    cout << endl << "v1 / v2: " + (v1 / v2).text() << endl;
+//    cout << "v2 / v3: " + (v2 / v3).text() << endl;
   }
 
   cout << endl << "### Double ###" << endl;
@@ -184,8 +186,8 @@ int main()
     cout << endl << "v1 + v2: " + (v1 + v2).text() << endl;
     cout << "v2 + v3: " + (v2 + v3).text() << endl;
 
-    cout << endl << "v1 / v2: " + (v1 / v2).text() << endl;
-    cout << "v2 / v3: " + (v2 / v3).text() << endl;
+//    cout << endl << "v1 / v2: " + (v1 / v2).text() << endl;
+//    cout << "v2 / v3: " + (v2 / v3).text() << endl;
   }
 
   cout << endl << "### String ###" << endl;
@@ -232,7 +234,7 @@ int main()
     cout << endl << "v1 + v2: " + (v1 + v2).text() << endl;
     cout << "v2 + v3: " + (v2 + v3).text() << endl;
 
-    cout << endl << "v1 / v2: " + (v1 / v2).text() << endl;
-    cout << "v2 / v3: " + (v2 / v3).text() << endl;
+//    cout << endl << "v1 / v2: " + (v1 / v2).text() << endl;
+//    cout << "v2 / v3: " + (v2 / v3).text() << endl;
   }
 }
