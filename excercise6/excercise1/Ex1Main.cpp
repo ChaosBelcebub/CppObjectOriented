@@ -76,10 +76,20 @@ template<typename T> class Vielleicht
   }
 };
 
-// template<>
-// string& string::operator/(const string& s1, const string& s2)
-// {
-// }
+ string& operator/(const string& lhs, const string& rhs)
+{
+  stringstream ss;
+  for (unsigned int i = 0; i < lhs.length(); ++i)
+  {
+    if (rhs.find(lhs[i]) != string::npos)
+    {
+      ss << lhs[i];
+    }
+  }
+  string *s = new string(ss.str());
+  return *s;
+}
+
 int main()
 {
   cout << endl << "### Integer ###" << endl;
@@ -181,8 +191,8 @@ int main()
   cout << endl << "### String ###" << endl;
   {
     Vielleicht<string> v1;
-    Vielleicht<string> v2("Hallo Welt");
-    Vielleicht<string> v3("Hallo");
+    Vielleicht<string> v2("Spam spam spam egg");
+    Vielleicht<string> v3("egg");
 
     cout << endl << "Wert von v1:" << endl;
     try
@@ -222,7 +232,7 @@ int main()
     cout << endl << "v1 + v2: " + (v1 + v2).text() << endl;
     cout << "v2 + v3: " + (v2 + v3).text() << endl;
 
-    //cout << endl << "v1 / v2: " + (v1 / v2).text() << endl;
-    //cout << "v2 / v3: " + (v2 / v3).text() << endl;
+    cout << endl << "v1 / v2: " + (v1 / v2).text() << endl;
+    cout << "v2 / v3: " + (v2 / v3).text() << endl;
   }
 }
