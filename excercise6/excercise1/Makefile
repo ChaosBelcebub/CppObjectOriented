@@ -1,4 +1,4 @@
-CXX = g++ -g -std=c++0x -Wall
+CXX = g++ -g -std=c++0x
 CHECKSTYLE = python ../cpplint.py
 MAIN = $(basename $(wildcard *Main.cpp))
 TEST = $(basename $(wildcard *Test.cpp))
@@ -8,9 +8,15 @@ LIBS = -lncurses
 
 .PRECIOUS: %.o
 
-all: compile
+all: compile test checkstyle
 
 compile: $(MAIN) $(TEST)
+
+test: compile
+	for T in $(TEST); do ./$$T; done
+
+checkstyle:
+	$(CHECKSTYLE) *.cpp *.h
 
 %Main: %Main.o $(OBJECTS)
 	$(CXX) -o $@ $^ $(LIBS)
