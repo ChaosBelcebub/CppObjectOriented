@@ -81,3 +81,6 @@ template<> Vielleicht<string> Vielleicht<string>::operator/(const Vielleicht<str
   return Vielleicht<string>(ss.str());
 }
 
+// Explicit instantiation, needed for tests
+template class Vielleicht<int>;
+template class Vielleicht<double>;
