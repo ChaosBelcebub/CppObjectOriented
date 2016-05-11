@@ -1,16 +1,6 @@
-// Michael Kotzjan
-// HFU, 06.05.2016
+#include "./Ex1EmptyObjException.h"
 
-#include <iostream>
-
-using namespace std;
-
-class EmptyObjException
+EmptyObjException::EmptyObjException()
 {
-  public:
-    const char * msg;
-    EmptyObjException()
-    {
-      msg = "Objekt ist leer";
-    }
-};
+  msg = "Objekt ist leer";
+}

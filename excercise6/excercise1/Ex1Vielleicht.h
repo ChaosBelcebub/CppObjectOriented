@@ -8,8 +8,8 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include "./Ex1Bruch.cpp"
-#include "./Ex1EmptyObjException.cpp"
+#include "./Ex1Bruch.h"
+#include "./Ex1EmptyObjException.h"
 
 using namespace std;
 

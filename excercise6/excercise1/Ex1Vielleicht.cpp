@@ -38,7 +38,7 @@ template<typename T> string Vielleicht<T>::text() const
     return "leer";
   } else {
     stringstream ss;
-    ss << m_wert;
+    ss << derWert();
     return ss.str();
   }
 }
@@ -84,3 +84,5 @@ template<> Vielleicht<string> Vielleicht<string>::operator/(const Vielleicht<str
 // Explicit instantiation, needed for tests
 template class Vielleicht<int>;
 template class Vielleicht<double>;
+template class Vielleicht<string>;
+template class Vielleicht<Bruch>;
