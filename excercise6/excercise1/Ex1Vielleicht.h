@@ -17,11 +17,14 @@ template<typename T> class Vielleicht
 {
   T m_wert;
   bool m_leer;
-  
+  FRIEND_TEST(CharPointer, testCopy);
+  FRIEND_TEST(CharPointer, testAssign);
+
   public:
   // Constructor
   Vielleicht(T wert);
   Vielleicht();
+  Vielleicht(const Vielleicht<T>& v);
 
   // Returns true if object is empty
   bool leer() const;
@@ -37,6 +40,9 @@ template<typename T> class Vielleicht
 
   // / operator
   Vielleicht<T> operator/(const Vielleicht<T>& v);
+
+  // = operator
+  const Vielleicht<T>& operator=(const Vielleicht<T>& v);
 };
 
 #endif // EX1VIELLEICHT_H_

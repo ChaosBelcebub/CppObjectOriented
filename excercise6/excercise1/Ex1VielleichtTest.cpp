@@ -415,3 +415,43 @@ TEST(CharPointer, testDivision)
   ASSERT_FALSE(result.leer());
   ASSERT_EQ(result.text(), "");
 }
+
+// ____________________________________________________________________________
+TEST(CharPointer, testCopy)
+{
+  char * cp1 = new char[11];
+  char * cp2 = new char[6];
+  strcpy(cp1, "Hallo Welt");
+  strcpy(cp2, "Hallo");
+  cp1[10] = 0;
+  cp2[5] = 0;
+  Vielleicht<char*> v1(cp1);
+  Vielleicht<char*> v2 = v1;
+  v1.m_wert = cp2;
+  ASSERT_EQ(v1.text(), "Hallo");
+  ASSERT_EQ(v2.text(), "Hallo Welt");
+}
+
+// ____________________________________________________________________________
+TEST(CharPointer, testAssign)
+{
+  char * cp1 = new char[11];
+  char * cp2 = new char[6];
+  char * cp3 = new char[5];
+  strcpy(cp1, "Hallo Welt");
+  strcpy(cp2, "Hallo");
+  strcpy(cp3, "Test");
+  cp1[10] = 0;
+  cp2[5] = 0;
+  cp3[4] = 0;
+  Vielleicht<char*> v1(cp1);
+  Vielleicht<char*> v2(cp2);
+  Vielleicht<char*> v3;
+  v2 = v1;
+  v3 = v1;
+  v1.m_wert = cp3;
+  ASSERT_EQ(v1.text(), "Test");
+  ASSERT_EQ(v2.text(), "Hallo Welt");
+  ASSERT_EQ(v3.text(), "Hallo Welt");
+  ASSERT_FALSE(v3.leer());
+}

@@ -14,6 +14,36 @@ template<typename T> Vielleicht<T>::Vielleicht() : m_leer(true)
 }
 
 // ____________________________________________________________________________
+template<typename T> Vielleicht<T>::Vielleicht(const Vielleicht<T>& v)
+{
+  m_leer = v.m_leer;
+  m_wert = v.m_wert;
+}
+
+// ____________________________________________________________________________
+template<> Vielleicht<char*>::Vielleicht(const Vielleicht<char*>& v)
+{
+  m_leer = v.m_leer;
+  if(!v.m_leer)
+  {
+    stringstream ss;
+    for(int i = 0; v.m_wert[i] != 0; ++i)
+    {
+      ss << v.m_wert[i];
+    }
+    string s = ss.str();
+    int size = s.length();
+    char* result = new char(size + 1);
+    for(int i = 0; i < size; ++i)
+    {
+      result[i] = s[i];
+    }
+    result[size] = 0;
+    m_wert = result;
+  }
+}
+
+// ____________________________________________________________________________
 template<typename T> bool Vielleicht<T>::leer() const
 {
   return m_leer;
@@ -43,6 +73,7 @@ template<typename T> string Vielleicht<T>::text() const
   }
 }
 
+// ____________________________________________________________________________
 template<typename T> Vielleicht<T> Vielleicht<T>::operator+(const Vielleicht<T>& v)
 {
   if (leer() || v.leer())
@@ -55,10 +86,10 @@ template<typename T> Vielleicht<T> Vielleicht<T>::operator+(const Vielleicht<T>&
   }
 }
 
+// ____________________________________________________________________________
 template<> Vielleicht<char*> Vielleicht<char*>::operator+(const Vielleicht<char*>& v)
 {
   if (leer() || v.leer()) return Vielleicht<char*>();
-    // TODO: Finish implementation
     stringstream ss;
     for(int i = 0; m_wert[i] != 0; ++i)
     {
@@ -76,9 +107,11 @@ template<> Vielleicht<char*> Vielleicht<char*>::operator+(const Vielleicht<char*
       result[i] = s[i];
     }
     result[size] = 0;
+    Vielleicht<char*> a(result);
     return Vielleicht<char*>(result);
 }
 
+// ____________________________________________________________________________
 template<typename T> Vielleicht<T> Vielleicht<T>::operator/(const Vielleicht<T>& v)
 {
   if (leer() || v.leer())
@@ -91,18 +124,57 @@ template<typename T> Vielleicht<T> Vielleicht<T>::operator/(const Vielleicht<T>&
   }
 }
 
+// ____________________________________________________________________________
 template<> Vielleicht<string> Vielleicht<string>::operator/(const Vielleicht<string>& v)
 {
   if (leer() || v.leer()) return Vielleicht<string>();
   return Vielleicht<string>("");
 }
 
+// ____________________________________________________________________________
 template<> Vielleicht<char*> Vielleicht<char*>::operator/(const Vielleicht<char*>& v)
 {
   if (leer() || v.leer()) return Vielleicht<char*>();
   char* result = new char(1);
   result[0] = 0;
   return Vielleicht<char*>(result);
+}
+
+// ____________________________________________________________________________
+template<typename T> const Vielleicht<T>& Vielleicht<T>::operator=(const Vielleicht<T>& v)
+{
+  m_wert = v.m_wert;
+  m_leer = v.m_leer;
+  return v;
+}
+
+// ____________________________________________________________________________
+template<> const Vielleicht<char*>& Vielleicht<char*>::operator=(const Vielleicht<char*>& v)
+{
+  if(!m_leer)
+  {
+    delete m_wert;
+    m_leer = true;
+  }
+  if(!v.m_leer)
+  {
+    m_leer = false;
+    stringstream ss;
+    for(int i = 0; v.m_wert[i] != 0; ++i)
+    {
+      ss << v.m_wert[i];
+    }
+    string s = ss.str();
+    int size = s.length();
+    char* result = new char(size + 1);
+    for(int i = 0; i < size; ++i)
+    {
+      result[i] = s[i];
+    }
+    result[size] = 0;
+    m_wert = result;
+  }
+  return v;
 }
 
 // Explicit instantiation, needed for tests
