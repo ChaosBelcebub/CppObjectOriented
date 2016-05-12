@@ -226,7 +226,7 @@ TEST(String, testDivision)
 
   result = v2 / v3;
   ASSERT_FALSE(result.leer());
-  ASSERT_EQ(result.text(), "Hallol");
+  ASSERT_EQ(result.text(), "");
 }
 
 // ____________________________________________________________________________
@@ -301,4 +301,117 @@ TEST(Bruch, testDivision)
   result = v2 / v3;
   ASSERT_FALSE(result.leer());
   ASSERT_EQ(result.text(), "4/2");
+}
+
+// ____________________________________________________________________________
+TEST(CharPointer, testDerWert)
+{
+  char * cp1 = new char[11];
+  char * cp2 = new char[6];
+  strcpy(cp1, "Hallo Welt");
+  strcpy(cp2, "Hallo");
+  cp1[10] = 0;
+  cp2[5] = 0;
+  Vielleicht<char*> v1;
+  Vielleicht<char*> v2(cp1);
+  Vielleicht<char*> v3(cp2);
+
+  try
+  {
+    v1.derWert();
+    FAIL();
+  } catch(EmptyObjException e) {
+  }
+
+  char* result1 = v2.derWert();
+  char* result2 = v3.derWert();
+  
+  for(int i = 0; i < 10; ++i)
+  {
+    ASSERT_EQ(result1[i], cp1[i]);
+  }
+  for(int i = 0; i < 10; ++i)
+  {
+    ASSERT_EQ(result2[i], cp2[i]);
+  }
+}
+
+// ____________________________________________________________________________
+TEST(CharPointer, testLeer)
+{
+  char * cp1 = new char[11];
+  char * cp2 = new char[6];
+  strcpy(cp1, "Hallo Welt");
+  strcpy(cp2, "Hallo");
+  cp1[10] = 0;
+  cp2[5] = 0;
+  Vielleicht<char*> v1;
+  Vielleicht<char*> v2(cp1);
+  Vielleicht<char*> v3(cp2);
+
+  ASSERT_TRUE(v1.leer());
+  ASSERT_FALSE(v2.leer());
+  ASSERT_FALSE(v3.leer());
+}
+
+// ____________________________________________________________________________
+TEST(CharPointer, testText)
+{
+  char * cp1 = new char[11];
+  char * cp2 = new char[6];
+  strcpy(cp1, "Hallo Welt");
+  strcpy(cp2, "Hallo");
+  cp1[10] = 0;
+  cp2[5] = 0;
+  Vielleicht<char*> v1;
+  Vielleicht<char*> v2(cp1);
+  Vielleicht<char*> v3(cp2);
+
+  ASSERT_EQ(v1.text(), "leer");
+  ASSERT_EQ(v2.text(), "Hallo Welt");
+  ASSERT_EQ(v3.text(), "Hallo");
+}
+
+// ____________________________________________________________________________
+TEST(CharPointer, testAddition)
+{
+  char * cp1 = new char[11];
+  char * cp2 = new char[6];
+  strcpy(cp1, "Hallo Welt");
+  strcpy(cp2, "Hallo");
+  cp1[10] = 0;
+  cp2[5] = 0;
+  Vielleicht<char*> v1;
+  Vielleicht<char*> v2(cp1);
+  Vielleicht<char*> v3(cp2);
+
+  Vielleicht<char*> result = v1 + v2;
+  ASSERT_TRUE(result.leer());
+  ASSERT_EQ(result.text(), "leer");
+
+  result = v2 + v3;
+  ASSERT_FALSE(result.leer());
+  ASSERT_EQ(result.text(), "Hallo WeltHallo");
+}
+
+// ____________________________________________________________________________
+TEST(CharPointer, testDivision)
+{
+  char * cp1 = new char[11];
+  char * cp2 = new char[6];
+  strcpy(cp1, "Hallo Welt");
+  strcpy(cp2, "Hallo");
+  cp1[10] = 0;
+  cp2[5] = 0;
+  Vielleicht<char*> v1;
+  Vielleicht<char*> v2(cp1);
+  Vielleicht<char*> v3(cp2);
+
+  Vielleicht<char*> result = v1 / v2;
+  ASSERT_TRUE(result.leer());
+  ASSERT_EQ(result.text(), "leer");
+
+  result = v2 / v3;
+  ASSERT_FALSE(result.leer());
+  ASSERT_EQ(result.text(), "");
 }

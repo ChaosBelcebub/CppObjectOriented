@@ -55,6 +55,30 @@ template<typename T> Vielleicht<T> Vielleicht<T>::operator+(const Vielleicht<T>&
   }
 }
 
+template<> Vielleicht<char*> Vielleicht<char*>::operator+(const Vielleicht<char*>& v)
+{
+  if (leer() || v.leer()) return Vielleicht<char*>();
+    // TODO: Finish implementation
+    stringstream ss;
+    for(int i = 0; m_wert[i] != 0; ++i)
+    {
+      ss << m_wert[i];
+    }
+    for(int i = 0; v.m_wert[i] != 0; ++i)
+    {
+      ss << v.m_wert[i];
+    }
+    string s = ss.str();
+    int size = s.length();
+    char* result = new char(size + 1);
+    for(int i = 0; i < size; ++i)
+    {
+      result[i] = s[i];
+    }
+    result[size] = 0;
+    return Vielleicht<char*>(result);
+}
+
 template<typename T> Vielleicht<T> Vielleicht<T>::operator/(const Vielleicht<T>& v)
 {
   if (leer() || v.leer())
@@ -70,15 +94,15 @@ template<typename T> Vielleicht<T> Vielleicht<T>::operator/(const Vielleicht<T>&
 template<> Vielleicht<string> Vielleicht<string>::operator/(const Vielleicht<string>& v)
 {
   if (leer() || v.leer()) return Vielleicht<string>();
-  stringstream ss;
-  for (unsigned int i = 0; i < m_wert.length(); ++i)
-  {
-    if (v.derWert().find(m_wert[i]) != string::npos)
-    {
-      ss << m_wert[i];
-    }
-  }
-  return Vielleicht<string>(ss.str());
+  return Vielleicht<string>("");
+}
+
+template<> Vielleicht<char*> Vielleicht<char*>::operator/(const Vielleicht<char*>& v)
+{
+  if (leer() || v.leer()) return Vielleicht<char*>();
+  char* result = new char(1);
+  result[0] = 0;
+  return Vielleicht<char*>(result);
 }
 
 // Explicit instantiation, needed for tests
@@ -86,3 +110,4 @@ template class Vielleicht<int>;
 template class Vielleicht<double>;
 template class Vielleicht<string>;
 template class Vielleicht<Bruch>;
+template class Vielleicht<char*>;
