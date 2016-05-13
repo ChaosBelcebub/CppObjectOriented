@@ -23,16 +23,21 @@ template<typename T> Vielleicht<T>::Vielleicht(const Vielleicht<T>& v)
 // ____________________________________________________________________________
 template<> Vielleicht<char*>::Vielleicht(const Vielleicht<char*>& v)
 {
+  // Copy empty state
   m_leer = v.m_leer;
+  // Check if state is empty
   if(!v.m_leer)
   {
+    // Copy everything to stringstream
     stringstream ss;
     for(int i = 0; v.m_wert[i] != 0; ++i)
     {
       ss << v.m_wert[i];
     }
+    // Determine size
     string s = ss.str();
     int size = s.length();
+    // Create new char* and copy everything
     char* result = new char(size + 1);
     for(int i = 0; i < size; ++i)
     {
@@ -89,26 +94,28 @@ template<typename T> Vielleicht<T> Vielleicht<T>::operator+(const Vielleicht<T>&
 // ____________________________________________________________________________
 template<> Vielleicht<char*> Vielleicht<char*>::operator+(const Vielleicht<char*>& v)
 {
+  // Return empty object if one of both is empty
   if (leer() || v.leer()) return Vielleicht<char*>();
-    stringstream ss;
-    for(int i = 0; m_wert[i] != 0; ++i)
-    {
-      ss << m_wert[i];
-    }
-    for(int i = 0; v.m_wert[i] != 0; ++i)
-    {
-      ss << v.m_wert[i];
-    }
-    string s = ss.str();
-    int size = s.length();
-    char* result = new char(size + 1);
-    for(int i = 0; i < size; ++i)
-    {
-      result[i] = s[i];
-    }
-    result[size] = 0;
-    Vielleicht<char*> a(result);
-    return Vielleicht<char*>(result);
+  // Add both char* to a stringstream
+  stringstream ss;
+  for(int i = 0; m_wert[i] != 0; ++i)
+  {
+    ss << m_wert[i];
+  }
+  for(int i = 0; v.m_wert[i] != 0; ++i)
+  {
+    ss << v.m_wert[i];
+  }
+  // Determine length and create new char*
+  string s = ss.str();
+  int size = s.length();
+  char* result = new char(size + 1);
+  for(int i = 0; i < size; ++i)
+  {
+    result[i] = s[i];
+  }
+  result[size] = 0;
+  return Vielleicht<char*>(result);
 }
 
 // ____________________________________________________________________________
@@ -151,11 +158,13 @@ template<typename T> const Vielleicht<T>& Vielleicht<T>::operator=(const Viellei
 // ____________________________________________________________________________
 template<> const Vielleicht<char*>& Vielleicht<char*>::operator=(const Vielleicht<char*>& v)
 {
+  // Delete the old value if needed
   if(!m_leer)
   {
     delete m_wert;
     m_leer = true;
   }
+  // Copy the new value if needed
   if(!v.m_leer)
   {
     m_leer = false;

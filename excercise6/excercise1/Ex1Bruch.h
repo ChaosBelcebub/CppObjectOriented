@@ -11,9 +11,11 @@ class Bruch
   int n;
   int d;
 
+  // Konstruktor
   Bruch();
   Bruch(int a, int b);
 
+  // Operatoren
   Bruch operator+(const Bruch& b) const;
   Bruch operator/(const Bruch& b) const;
   friend ostream& operator<<(ostream& out, const Bruch& b);
