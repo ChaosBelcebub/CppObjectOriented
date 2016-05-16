@@ -4,16 +4,19 @@
 #ifndef TRANSFORM_H
 #define TRANSFORM_H
 
+#include <fstream>
 #include <string>
 
 using namespace std;
 
 class Transform
 {
-  // Flag and file names
-  static string flag;
-  static string source;
+  // File names
+  static string input;
   static string output;
+
+  // Check if file exist
+  static bool fileExist(const char* filename);
 
   // Remove multiple spaces
   // Needed flag: -L

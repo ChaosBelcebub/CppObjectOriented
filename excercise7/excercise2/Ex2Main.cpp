@@ -24,7 +24,11 @@ int main(int argc, char* argv[])
     cout << "ERROR" << endl;
   }
 
-  ifstream ifs("test.txt", ifstream::in);
+  ifstream ifs("test2.txt", ifstream::in);
+  if (ifs.is_open())
+    cout << "OPEN" << endl;
+  else
+    cout << "FAIL" << endl;
   char c = ifs.get();
   while (ifs.good())
   {
