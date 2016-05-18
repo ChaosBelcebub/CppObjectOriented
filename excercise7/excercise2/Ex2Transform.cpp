@@ -49,5 +49,27 @@ bool Transform::fileExist(const char* filename)
 // ____________________________________________________________________________
 void Transform::trim()
 {
-// using std::ws <-------  
+// using std::ws <-------
+  string line;
+  stringstream result;
+  ifstream input(Transform::input);
+  if(input.is_open())
+  {
+    while (getline(input >> ws, line))
+    {
+      result << line << endl;
+    }
+    input.close();
+  } else {
+    throw "Can't open input file.";
+  }
+
+  ofstream output(Transform::output);
+  if(output.is_open())
+  {
+    output << result.str();
+    output.close();
+  } else {
+    throw "Can't open output file.";
+  }
 }
