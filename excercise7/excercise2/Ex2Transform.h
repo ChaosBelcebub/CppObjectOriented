@@ -5,6 +5,7 @@
 #define TRANSFORM_H
 
 #include <fstream>
+#include <iomanip>
 #include <sstream>
 #include <string>
 
@@ -18,6 +19,10 @@ class Transform
   // Remove multiple spaces
   // Needed flag: -L
   static void trim(istream& input, string& output, bool oneLine);
+
+  // Add enumeration in front of each line
+  // Needed flag: -Z
+  static void enumerate(istream& input, string& output, bool oneLine);
 
   public:
   // Run transformation

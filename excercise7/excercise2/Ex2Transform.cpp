@@ -20,7 +20,7 @@ void Transform::transform(int amount, char* parameter[])
   }
 
   string p = parameter[1];
-  if(p != "-L")
+  if(!(p == "-L" || p == "-Z"))
   {
     throw "Parameter does not exist.";
   }
@@ -52,6 +52,8 @@ void Transform::transform(int amount, char* parameter[])
   if(p == "-L")
   {
     trim(*inputStream, result, consoleInput);
+  } else if(p == "-Z") {
+    enumerate(*inputStream, result, consoleInput);
   }
 
   // Print or save result in file
@@ -103,6 +105,36 @@ void Transform::trim(istream& input, string& output, bool oneLine)
       }
     }
     ss << endl;
+    if(oneLine) break;
+  }
+  output = ss.str();
+}
+
+// ____________________________________________________________________________
+void Transform::enumerate(istream& input, string& output, bool oneLine)
+{
+  stringstream tmp;
+  stringstream ss;
+  string line;
+  int count = 0;
+  int number = 1;
+  while (getline(input, line))
+  {
+    tmp << line << endl;
+    ++count;
+  }
+
+  // Get length of integer
+  int size = 0;
+  do {
+    count /= 10;
+    ++size;
+  } while(count);
+
+  while (getline(tmp, line))
+  {
+    ss << setw(size) << left << number << "| " << line << endl;
+    ++number;
     if(oneLine) break;
   }
   output = ss.str();
