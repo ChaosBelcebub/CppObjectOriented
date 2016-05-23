@@ -1,4 +1,4 @@
-CXX = g++ -g -std=c++0x
+CXX = g++ -g -std=c++0x -Wall
 MAIN = $(basename $(wildcard *Main.cpp))
 TEST = $(basename $(wildcard *Test.cpp))
 OBJECTS = $(addsuffix .o, $(filter-out %Main %Test, $(basename $(wildcard *.cpp))))
@@ -7,7 +7,7 @@ LIBS = -lncurses
 
 .PRECIOUS: %.o
 
-all: compile
+all: compile test
 
 compile: $(MAIN) $(TEST)
 

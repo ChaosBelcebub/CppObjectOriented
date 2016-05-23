@@ -6,36 +6,69 @@
 
 using namespace std;
 
-// Definition of variables
-string Transform::input = "";
-string Transform::output = "";
-
 // ____________________________________________________________________________
 void Transform::transform(int amount, char* parameter[])
 {
-  if(amount < 3 || amount > 5)
+  istream* inputStream;
+  ifstream *input;
+  string result;
+  string output;
+  bool consoleInput = false;
+  if(amount < 2 || amount > 4)
   {
-    throw "Not the right amount of parameter\n(Usage: ./Ex2Main <Flag> <Input> <Optional: Output>)";
+    throw "Not the right amount of parameter\n(Usage: ./Ex2Main <Flag> <Optional: Input> <Optional: Output>)";
   }
 
-  if(!fileExist(parameter[2]))
-  {
-    throw "Input file does not exist";
-  }
-  input = output = parameter[2];
-
-  if(amount != 3)
-  {
-    output = parameter[3];
-  }
-
-  // Check if input file exist
   string p = parameter[1];
+  if(p != "-L")
+  {
+    throw "Parameter does not exist.";
+  }
+
+  if(amount >= 3)
+  {
+    if(!fileExist(parameter[2]))
+    {
+      throw "Input file does not exist";
+    } else {
+      input = new ifstream(parameter[2]);
+      inputStream = input;
+      consoleInput = false;
+    }
+    
+    if(amount != 3)
+    {
+      output = parameter[3];
+    } else {
+      output = parameter[2];
+    }
+  } else {
+    inputStream = &cin;
+    consoleInput = true;
+    cout << "Enter text:" << endl;
+  }
+
+  // Run operation
   if(p == "-L")
   {
-    trim();
+    trim(*inputStream, result, consoleInput);
+  }
+
+  // Print or save result in file
+  if(consoleInput)
+  {
+    cout << "Result:" << endl;
+    cout << result;
   } else {
-    throw "Parameter does not exist.";
+    
+    ofstream os(output);
+    if(os.is_open())
+    {
+      os << result;
+      os.close();
+    } else {
+      throw "Can't open output file.";
+    }
   }
 }
 
@@ -47,29 +80,30 @@ bool Transform::fileExist(const char* filename)
 }
 
 // ____________________________________________________________________________
-void Transform::trim()
+void Transform::trim(istream& input, string& output, bool oneLine)
 {
-// using std::ws <-------
+  bool isWhitespace;
+  stringstream ss;
   string line;
-  stringstream result;
-  ifstream input(Transform::input);
-  if(input.is_open())
-  {
-    while (getline(input >> ws, line))
-    {
-      result << line << endl;
-    }
-    input.close();
-  } else {
-    throw "Can't open input file.";
-  }
 
-  ofstream output(Transform::output);
-  if(output.is_open())
+  while (getline(input >> ws, line))
   {
-    output << result.str();
-    output.close();
-  } else {
-    throw "Can't open output file.";
+    isWhitespace = false;
+    for(unsigned int i = 0; i < line.length(); ++i)
+    {
+      if(!isWhitespace && line[i] == ' ')
+      {
+        ss << line[i];
+        isWhitespace = true;
+      } else if(isWhitespace && line[i] == ' ') {
+        continue;
+      } else {
+        ss << line[i];
+        isWhitespace = false;
+      }
+    }
+    ss << endl;
+    if(oneLine) break;
   }
+  output = ss.str();
 }

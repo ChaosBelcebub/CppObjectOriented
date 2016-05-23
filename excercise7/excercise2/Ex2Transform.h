@@ -12,16 +12,12 @@ using namespace std;
 
 class Transform
 {
-  // File names
-  static string input;
-  static string output;
-
   // Check if file exist
   static bool fileExist(const char* filename);
 
   // Remove multiple spaces
   // Needed flag: -L
-  static void trim();
+  static void trim(istream& input, string& output, bool oneLine);
 
   public:
   // Run transformation
