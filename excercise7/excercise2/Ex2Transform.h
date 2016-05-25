@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <sstream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -23,6 +24,16 @@ class Transform
   // Add enumeration in front of each line
   // Needed flag: -Z
   static void enumerate(istream& input, string& output, bool oneLine);
+
+  // Transform a bitstring to unsigned integer
+  static unsigned int toInt(const string& bs);
+
+  // Split a string on whitespace and store the result in a vector
+  static void split(string& input, vector<string>& result);
+
+  // Transform 32 bit strings to integers
+  // Needed flag: -I
+  static void bitToInt(istream& input, string& output, bool oneLine);
 
   public:
   // Run transformation

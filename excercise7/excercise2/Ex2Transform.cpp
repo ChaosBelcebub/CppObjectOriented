@@ -20,7 +20,7 @@ void Transform::transform(int amount, char* parameter[])
   }
 
   string p = parameter[1];
-  if(!(p == "-L" || p == "-Z"))
+  if(!(p == "-L" || p == "-Z" || p == "-I"))
   {
     throw "Parameter does not exist.";
   }
@@ -54,6 +54,8 @@ void Transform::transform(int amount, char* parameter[])
     trim(*inputStream, result, consoleInput);
   } else if(p == "-Z") {
     enumerate(*inputStream, result, consoleInput);
+  } else if(p == "-I") {
+    bitToInt(*inputStream, result, consoleInput);
   }
 
   // Print or save result in file
@@ -138,4 +140,59 @@ void Transform::enumerate(istream& input, string& output, bool oneLine)
     if(oneLine) break;
   }
   output = ss.str();
+}
+
+// ____________________________________________________________________________
+unsigned int Transform::toInt(const string& bs)
+{
+  unsigned int tmp;
+  unsigned int num = 0;
+  int length = bs.length();
+  for(int i = 0; i < length; ++i)
+  {
+    if(bs[i] != '0' && bs[i] != '1')
+    {
+      throw "String to Int transformation: Input contains unsupported characters.";
+    }
+    // Get value of bit
+    tmp = bs[i] - '0';
+    num |= (1 << (length - 1 - i)) * tmp;
+  }
+  return num;
+}
+
+// ____________________________________________________________________________
+void Transform::bitToInt(istream& input, string& output, bool oneLine)
+{
+  string line;
+  string item;
+  stringstream ssLine;
+  stringstream result;
+  char sign;
+  int tmp;
+
+  while(getline(input, line))
+  {
+    ssLine << line;
+    // Split on whitespace
+    while(getline(ssLine, item, ' '))
+    {
+      if(item.length() != 32)
+        throw "Size of the given binarys is not correct.";
+      sign = item[0];
+      item = item.substr(1, 31);
+      cout << item << endl;
+      tmp = toInt(item);
+      if(sign == '1')
+      {
+        tmp *= -1;
+      } else if(sign != '0') {
+        throw "Input contains unsupported characters.";
+      }
+      result << tmp << ' ';
+    }
+    result << endl;
+    if(oneLine) break;
+  }
+  output = result.str();
 }
