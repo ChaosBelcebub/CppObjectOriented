@@ -35,6 +35,10 @@ class Transform
   // Needed flag: -I
   static void bitToInt(istream& input, string& output, bool oneLine);
 
+  // Transform 64 bit strings to doubles
+  // Needed flag: -D
+  static void bitToDouble(istream& input, string& output, bool oneLine);
+
   public:
   // Run transformation
   static void transform(int amount, char* parameter[]);

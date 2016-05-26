@@ -20,7 +20,7 @@ void Transform::transform(int amount, char* parameter[])
   }
 
   string p = parameter[1];
-  if(!(p == "-L" || p == "-Z" || p == "-I"))
+  if(!(p == "-L" || p == "-Z" || p == "-I" || p == "-D"))
   {
     throw "Parameter does not exist.";
   }
@@ -56,6 +56,8 @@ void Transform::transform(int amount, char* parameter[])
     enumerate(*inputStream, result, consoleInput);
   } else if(p == "-I") {
     bitToInt(*inputStream, result, consoleInput);
+  } else if(p == "-D") {
+    bitToDouble(*inputStream, result, consoleInput);
   }
 
   // Print or save result in file
@@ -181,7 +183,6 @@ void Transform::bitToInt(istream& input, string& output, bool oneLine)
         throw "Size of the given binarys is not correct.";
       sign = item[0];
       item = item.substr(1, 31);
-      cout << item << endl;
       tmp = toInt(item);
       if(sign == '1')
       {
@@ -193,6 +194,47 @@ void Transform::bitToInt(istream& input, string& output, bool oneLine)
     }
     result << endl;
     if(oneLine) break;
+    ssLine.clear();
+  }
+  output = result.str();
+}
+
+// ____________________________________________________________________________
+void Transform::bitToDouble(istream& input, string& output, bool oneLine)
+{
+  string line;
+  string item;
+  string exponent;
+  stringstream ssLine;
+  stringstream result;
+  char sign;
+  int tmp;
+
+  while(getline(input, line))
+  {
+    ssLine << line;
+    // Split on whitespace
+    while(getline(ssLine, item, ' '))
+    {
+      if(item.length() != 64)
+        throw "Size of the given binarys is not correct.";
+      sign = item[0];
+      exponent = item.substr(1, 11);
+      item = item.substr(12, 52);
+      tmp = toInt(item);
+      result << tmp << "E";
+      tmp = toInt(exponent);
+      if(sign == '1')
+      {
+        tmp *= -1;
+      } else if(sign != '0') {
+        throw "Input contains unsupported characters.";
+      }
+      result << tmp << ' ';
+    }
+    result << endl;
+    if(oneLine) break;
+    ssLine.clear();
   }
   output = result.str();
 }
