@@ -1,0 +1,3 @@
+Hallo,    dies     ist     ein     Test.
+    Egal      wo     Leerzeichen   sind,
+            Hier wird    alles getrimmt.

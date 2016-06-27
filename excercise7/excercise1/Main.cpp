@@ -85,7 +85,8 @@ int main()
   }
 
   cout << endl << "b)" << endl << endl;
-  //int result = 2/0;
+  //
+  // int result = 2/0;
   // Es wird eine Gleitkomma-Ausnahme geworfen, die ich nicht
   // Abfangen konnte. Das Programm wurde beendet.
   

@@ -7,7 +7,7 @@ LIBS = -lncurses
 
 .PRECIOUS: %.o
 
-all: compile test
+all: compile
 
 compile: $(MAIN) $(TEST)
 
@@ -29,3 +29,4 @@ clean:
 	rm -f $(TEST)
 	rm -f *.h~
 	rm -f *.cpp~
+	rm -f result.txt

@@ -1,0 +1,415 @@
+##############################
+########## Testplan ##########
+##############################
+
+##############################
+### Allgemein:
+
+## Zu wenige Parameter beim Aufruf:
+  ./Ex2Main
+
+  Erwartet:
+    Fehlermeldung erscheint und Nutzung wird erklärt.
+    Das Programm wird beendet.
+
+  Ergebnis:
+    Fehlermeldung erscheint und die Benutzung wird korrekt erklärt.
+    Das Programm wird direkt beendet.
+
+## Zu viele Parameter beim Aufruf:
+  ./Ex2Main -L blah.txt blub.txt test.txt
+
+  Erwartet:
+    Fehlermeldung erscheint und Nutzung wird erklärt.
+    Das Programm wird beendet.
+
+  Ergebnis:
+    Fehlermeldung erscheint und die Benutzung wird korrekt erklärt.
+    Das Programm wird direkt beendet.
+
+## Falsche Flag beim Aufruf.
+  ./Ex2Main -TEST
+
+  Erwartet:
+    Es erscheint eine Fehlermeldung, die über den falschen Parameter
+    informiert. Das Programm wird beendet.
+
+  Ergebnis:
+    Fehlermeldung erscheint und Programm wird beendet.
+
+## Input Datei existiert nicht
+  ./Ex2Main -L testfiles/exist.txt
+
+  Erwartet:
+    Es erscheint eine Fehlermeldung mit der Aussage, das die Datei
+    nicht existiert. Das Programm wird beendet.
+
+  Ergebnis:
+    Fehlermeldung erscheint und Programm wird direkt beendet.
+
+##############################
+### Trimmen der Daten:
+
+## Trimmen einer Zeile von der Konsole mit übermäßigen Leerzeichen
+  ./Ex2Main -L
+
+  Erwartet:
+    Es wird zu Eingabe aufgefordert. Nach der Eingabe erscheint
+    direkt die korrekte Ausgabe ohne übermäßige Leerzeichen.
+
+  Ergebnis:
+    Das zurückgegebene Ergebnis ist korrekt.
+    Das Programm wird beendet.
+
+## Trimmen einer Zeile von der Konsole ohne übermäßige Leerzeichen
+  ./Ex2Main -L
+
+  Erwartet:
+    Es wird zur Eingabe aufgefordert. Nach der Eingabe erscheint
+    direkt die Ausgabe, die sich nicht von der Eingabe unterscheidet.
+
+  Ergebnis:
+    Die Ausgabe unterscheidet sich nicht von der Eingabe.
+
+## Trimmen einer Datei mit übermäßigen Leerzeichen
+  ./Ex2Main -L testfiles/testTrim.txt
+
+  Erwartet:
+    Hallo, dies ist ein Test.
+     Egal wo Leerzeichen sind,
+     Hier wird alles getrimmt.
+
+  Ergebnis:
+    Die Konsolenausgabe entspricht dem erwarteten Ergebnis.
+
+## Trimmen einer Datei ohne übermäßige Leerzeichen
+  ./Ex2Main -L testfiles/testTrimNo.txt
+
+  Erwartet:
+    Hallo, dies ist ein
+    Text ohne Leerzeichen.
+
+  Ergebnis:
+    Die Konsolenausgabe entspricht dem erwarteten Ergebnis.
+
+## Trimmen einer Datei und Ausgabe in Datei
+  ./Ex2Main -L testfiles/testTrim.txt result.txt
+
+  Erwartet:
+    Die Datei result.txt enthält folgenden transformierten Text:
+    Hallo, dies ist ein Test.
+     Egal wo Leerzeichen sind,
+     Hier wird alles getrimmt.
+
+  Ergebnis:
+    Die Datei enthält das erwartete Ergebnis.
+
+##############################
+### Zeilenorientierter Filter:
+
+## Einlesen einer Zeile von der Konsole
+  ./Ex2Main -Z
+
+  Erwartet:
+    Der Zeile wird eine "1| " vorangestellt.
+
+  Ergebnis:
+    Der eingegebenen Zeile wurde eine "1| " vorangestellt.
+
+## Einlesen einer Datei
+  ./Ex2Main -Z testfiles/testEnumerate.txt
+
+  Erwartet:
+    Allen Zeilen wird eine iterierende Zahl ausgegeben, bis zur 10.
+    Zeile. Die "|" befinden sich alle in der selben Spalte.
+
+  Ergebnis:
+    Alle ausgegebenen Zeilen enthalten zu beginn die Korrekte
+    Zeilennummer. Die "|" befinden sich alle in der selben Spalte.
+
+## Einlesen einer Datei und ausgabe in Datei
+  ./Ex2Main -Z testfiles/testEnumerate.txt result.txt
+
+  Erwartet:
+    Die Datei result.txt enthält den transformierten Text.
+    Die Zeilen enthalten zu beginn die Zeilennummer, getrennt von
+    einem "|", das sich immer in der gleichen Spalte befindet.
+
+  Ergebnis:
+    Die Datei enthält das erwartete Ergebnis.
+
+##############################
+### Binärdaten zu Int
+
+## Einlesen einer Binärzahl falscher Länge von der Konsole
+  ./Ex2Main -I
+  Eingabe von: 0
+  oder: 000000000000000000000000000000000
+
+  Erwartet: 
+    Es erscheint eine Fehlermeldung, das die Größe der Binarys nicht
+    korrekt ist.
+
+  Ergebnis:
+    Es erscheint die korrekte Fehlermeldung.
+
+## Einlesen einer Binärzahl mit anderen Zeichen als 0 & 1
+  ./Ex2Main -I
+  Eingabe von: 0000000000000000000000000000000a
+
+  Erwartet:
+    Es erscheint eine Fehlermeldung, das die Binarys nicht
+    unterstützte Werte enthalten.
+
+  Ergebnis:
+    Es erschient die korrekte Fehlermeldung.
+
+## Einlesen einer korrekten Binärzahl
+  ./Ex2Main -I
+  
+  Erwartet:
+    Die Ausgabe enthält die Korrekte Integerzahl.
+
+  Ergebnis:
+    Die Ausgabe ist korrekt.
+
+## Einlesen einer Datei mit falscher länge
+  ./Ex2Main -I testfiles/testIntError.txt
+
+  Erwartet:
+    Es wird eine Fehlermeldung ausgegeben, die auf die falsche Länge
+    hinweist.
+
+  Ergebnis:
+    Die korrekte Fehlermeldung wird angezeigt.
+
+## Einlesen einer Datei mit falschen Zeichen
+  ./Ex2Main -I testfiles/testIntError2.txt
+
+  Erwartet:
+    Es wird eine Fehlermeldung ausgegeben, die auf die falschen
+    Zeichen hinweist.
+
+  Ergebnis:
+    Die korrekte Fehlermeldung wird ausgegeben.
+
+## Einlesen einer Datei mit korrekten Binärdaten
+  ./Ex2Main -I testfiles/testInt.txt
+
+  Erwartet:
+    Es wird eine korrekte Umwandlung in folgende Ausgabe erwartet:
+    0 0
+    1 -1
+    2 -2
+    3 -3
+    4 -4
+    5 -5
+    170 -170
+    2147483647 -2147483647
+
+  Ergebnis:
+    Die Transformierung war erfolgreich.
+
+## Einlesen einer Datei und ausgabe in Datei 
+  ./Ex2Main -I testfiles/testInt.txt result.txt
+
+  Erwartet:
+    Es wird eine korrekte Umwandlung in die Datei mit
+    folgender Ausgabe erwartet:
+    0 0
+    1 -1
+    2 -2
+    3 -3
+    4 -4
+    5 -5
+    170 -170
+    2147483647 -2147483647
+
+  Ergebnis:
+    Die Transformierung war erfolgreich.
+
+##############################
+### Binärdaten zu Double
+
+## Einlesen einer Binärzahl falscher Länge von der Konsole
+  ./Ex2Main -D
+  Eingabe von: 0
+  oder: 000000000000000000000000000000000
+
+  Erwartet: 
+    Es erscheint eine Fehlermeldung, das die Größe der Binarys nicht
+    korrekt ist.
+
+  Ergebnis:
+    Es erscheint die korrekte Fehlermeldung.
+
+## Einlesen einer Binärzahl mit anderen Zeichen als 0 & 1
+  ./Ex2Main -D
+  Eingabe von: 100000000001000000000000000000000000000000000000000000000000000a
+
+  Erwartet:
+    Es erscheint eine Fehlermeldung, das die Binarys nicht
+    unterstützte Werte enthalten.
+
+  Ergebnis:
+    Es erschient die korrekte Fehlermeldung.
+
+## Einlesen einer korrekten Binärzahl
+  ./Ex2Main -D
+  
+  Erwartet:
+    Die Ausgabe enthält die Korrekte Doublezahl.
+
+  Ergebnis:
+    Die Ausgabe ist korrekt.
+
+## Einlesen einer Datei mit falscher länge
+  ./Ex2Main -D testfiles/testDoubleError.txt
+
+  Erwartet:
+    Es wird eine Fehlermeldung ausgegeben, die auf die falsche Länge
+    hinweist.
+
+  Ergebnis:
+    Die korrekte Fehlermeldung wird angezeigt.
+
+## Einlesen einer Datei mit falschen Zeichen
+  ./Ex2Main -D testfiles/testDoubleError2.txt
+
+  Erwartet:
+    Es wird eine Fehlermeldung ausgegeben, die auf die falschen
+    Zeichen hinweist.
+
+  Ergebnis:
+    Die korrekte Fehlermeldung wird ausgegeben.
+
+## Einlesen einer Datei mit korrekten Binärdaten
+  ./Ex2Main -D testfiles/testDouble.txt
+
+  Erwartet:
+    Es wird eine korrekte Umwandlung in folgende Ausgabe erwartet:
+    0E-1
+    1E-1
+    2E-1
+    3E-1
+    4E-1
+    5E-1
+    6E-1
+    7E-1
+
+  Ergebnis:
+    Die Transformierung war erfolgreich.
+
+## Einlesen einer Datei und ausgabe in Datei 
+  ./Ex2Main -D testfiles/testDouble.txt result.txt
+
+  Erwartet:
+    Es wird eine korrekte Umwandlung in die Datei mit
+    folgender Ausgabe erwartet:
+    0E-1
+    1E-1
+    2E-1
+    3E-1
+    4E-1
+    5E-1
+    6E-1
+    7E-1
+
+  Ergebnis:
+    Die Transformierung war erfolgreich.
+
+##############################
+### Binärdaten zu Hex
+
+## Einlesen einer Binärzahl falscher Länge von der Konsole
+  ./Ex2Main -H
+  Eingabe von: 0
+  oder: 000000000000000000000000000000000
+
+  Erwartet: 
+    Es erscheint eine Fehlermeldung, das die Größe der Binarys nicht
+    korrekt ist.
+
+  Ergebnis:
+    Es erscheint die korrekte Fehlermeldung.
+
+## Einlesen einer Binärzahl mit anderen Zeichen als 0 & 1
+  ./Ex2Main -H
+  Eingabe von: 0000000a
+
+  Erwartet:
+    Es erscheint eine Fehlermeldung, das die Binarys nicht
+    unterstützte Werte enthalten.
+
+  Ergebnis:
+    Es erschient die korrekte Fehlermeldung.
+
+## Einlesen einer korrekten Binärzahl
+  ./Ex2Main -H
+  
+  Erwartet:
+    Die Ausgabe enthält die Korrekte Hexzahl.
+
+  Ergebnis:
+    Die Ausgabe ist korrekt.
+
+## Einlesen einer Datei mit falscher länge
+  ./Ex2Main -H testfiles/testHexError.txt
+
+  Erwartet:
+    Es wird eine Fehlermeldung ausgegeben, die auf die falsche Länge
+    hinweist.
+
+  Ergebnis:
+    Die korrekte Fehlermeldung wird angezeigt.
+
+## Einlesen einer Datei mit falschen Zeichen
+  ./Ex2Main -H testfiles/testHexError2.txt
+
+  Erwartet:
+    Es wird eine Fehlermeldung ausgegeben, die auf die falschen
+    Zeichen hinweist.
+
+  Ergebnis:
+    Die korrekte Fehlermeldung wird ausgegeben.
+
+## Einlesen einer Datei mit korrekten Binärdaten
+  ./Ex2Main -H testfiles/testHex.txt
+
+  Erwartet:
+    Es wird eine korrekte Umwandlung in folgende Ausgabe erwartet:
+    0
+    1
+    2
+    3
+    4
+    5
+
+    ff
+    fe
+    fd
+    fc
+
+  Ergebnis:
+    Die Transformierung war erfolgreich.
+
+## Einlesen einer Datei und ausgabe in Datei 
+  ./Ex2Main -H testfiles/testHex.txt result.txt
+
+  Erwartet:
+    Es wird eine korrekte Umwandlung in die Datei mit
+    folgender Ausgabe erwartet:
+    0
+    1
+    2
+    3
+    4
+    5
+
+    ff
+    fe
+    fd
+    fc
+
+  Ergebnis:
+    Die Transformierung war erfolgreich.
